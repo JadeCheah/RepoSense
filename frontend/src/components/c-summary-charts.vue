@@ -339,6 +339,7 @@
           .summary-chart__contrib
             c-stacked-bar-chart(
               :bars="getFileTypeContributionBars(user.fileTypeContribution, user.checkedFileTypeContribution)"
+              @bar-click="onFileTypeBarClick($event, user)"
             )
         template(v-else)
           .summary-chart__contrib(
@@ -440,6 +441,10 @@ export default defineComponent({
     optimiseTimeline: {
       type: Boolean,
       default: false,
+    },
+    user: {
+      type: Object as () => User,
+      required: true,
     },
   },
   data(): {
@@ -1050,7 +1055,11 @@ export default defineComponent({
         return '';
       }
       return blurb;
-    }
+    },
+
+    onFileTypeBarClick(fileType: string, user: User) {
+      this.$emit('filter-by-filetype', { fileType, author: user.name });
+    },
   },
 });
 </script>
