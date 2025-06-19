@@ -46,7 +46,4 @@ app.use(store);
 
 app.use(router);
 
-// Enable devtools for Vue 3 (development build)
-(app.config as any).devtools = true;
-
 app.mount('#app');
