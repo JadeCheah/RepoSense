@@ -1,10 +1,12 @@
 <template lang="pug">
 .stacked-bar-container
   .stacked-bar__contrib--bar(
-    v-for="bar in bars",
+    v-for="(bar, idx) in bars",
+    :key="idx",
     :title="bar.tooltipText",
     :style="{ width: `${bar.width}%`,\
       'background-color': bar.color }"
+     @click="$emit('bar-click', bar.tooltipText.split(':')[0].trim())"
   )
 </template>
 

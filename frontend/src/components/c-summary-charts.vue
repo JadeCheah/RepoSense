@@ -339,6 +339,7 @@
           .summary-chart__contrib
             c-stacked-bar-chart(
               :bars="getFileTypeContributionBars(user.fileTypeContribution, user.checkedFileTypeContribution)"
+              @bar-click="handleFileTypeBarClick(user, repo, $event)"
             )
         template(v-else)
           .summary-chart__contrib(
@@ -440,7 +441,7 @@ export default defineComponent({
     optimiseTimeline: {
       type: Boolean,
       default: false,
-    },
+    }
   },
   data(): {
     drags: Array<number>,
@@ -1050,7 +1051,26 @@ export default defineComponent({
         return '';
       }
       return blurb;
-    }
+    },
+
+    handleFileTypeBarClick(user: User, repoGroup: Array<User>, fileType: string) {
+      const { minDate, maxDate } = this;
+
+      const info = {
+        minDate,
+        maxDate,
+        checkedFileTypes: [fileType],
+        author: user.name,
+        repo: user.repoName,
+        name: user.displayName,
+        isMergeGroup: this.isGroupMerged(this.getGroupName(repoGroup)),
+        location: this.getRepoLink(user),
+        files: [],
+      };
+
+      this.addSelectedTab(user.name, user.repoName, 'authorship', info.isMergeGroup);
+      this.$store.commit('updateTabAuthorshipInfo', info);
+    },
   },
 });
 </script>
